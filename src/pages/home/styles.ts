@@ -1,4 +1,4 @@
-import { styled, Heading, Text } from "@laf.ui/react";
+import { styled, Heading, Text } from '@laf.ui/react'
 
 export const Container = styled('div', {
   maxWidth: 'calc(100vw - (100vw - 1160px) / 2)',
@@ -11,8 +11,8 @@ export const Container = styled('div', {
   '@sm': {
     flexDirection: 'column',
     justifyContent: 'center',
-    margin: '0 $4'
-  }
+    margin: '0 $4',
+  },
 })
 
 export const Main = styled('div', {
@@ -21,14 +21,14 @@ export const Main = styled('div', {
 
   [`${Heading}`]: {
     '@sm': {
-      fontSize: '$6xl'
-    }
+      fontSize: '$6xl',
+    },
   },
 
   [`${Text}`]: {
     marginTop: '$2',
     color: '$gray200',
-  }
+  },
 })
 
 export const Preview = styled('div', {
@@ -36,6 +36,6 @@ export const Preview = styled('div', {
   paddingRight: '$8',
 
   '@sm': {
-    display: 'none'
-  }
+    display: 'none',
+  },
 })

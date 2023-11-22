@@ -8,11 +8,20 @@ export default function Home() {
     <Container>
       <Main>
         <Heading size="4xl">Agendamento descomplicado</Heading>
-        <Text size="xl">Conecte seu calendário e permita que as pessoas marquem agendamentos no seu tempo livre.</Text>
+        <Text size="xl">
+          Conecte seu calendário e permita que as pessoas marquem agendamentos
+          no seu tempo livre.
+        </Text>
       </Main>
 
       <Preview>
-        <Image src={previewImage} alt="Calendário de exemplo do funcionamento da aplicação" height={400} quality={100} priority />
+        <Image
+          src={previewImage}
+          alt="Calendário de exemplo do funcionamento da aplicação"
+          height={400}
+          quality={100}
+          priority
+        />
       </Preview>
     </Container>
   )
