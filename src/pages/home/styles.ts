@@ -7,6 +7,7 @@ export const Container = styled('div', {
   display: 'flex',
   alignItems: 'center',
   gap: '$20',
+  position: 'relative',
 
   '@sm': {
     flexDirection: 'column',
@@ -19,13 +20,13 @@ export const Main = styled('div', {
   maxWidth: 480,
   padding: '0 $10',
 
-  [`${Heading}`]: {
+  [`> ${Heading}`]: {
     '@sm': {
       fontSize: '$6xl',
     },
   },
 
-  [`${Text}`]: {
+  [`> ${Text}`]: {
     marginTop: '$2',
     color: '$gray200',
   },

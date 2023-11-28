@@ -2,6 +2,7 @@ import { Heading, Text } from '@laf.ui/react'
 import previewImage from '../../assets/app-preview.png'
 import Image from 'next/image'
 import { Container, Main, Preview } from './styles'
+import ClaimUsernameForm from './ClaimUsernameForm'
 
 export default function Home() {
   return (
@@ -12,8 +13,8 @@ export default function Home() {
           Conecte seu calendário e permita que as pessoas marquem agendamentos
           no seu tempo livre.
         </Text>
+        <ClaimUsernameForm />
       </Main>
-
       <Preview>
         <Image
           src={previewImage}
