@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 const registerFormSchema = z.object({
   username: z
@@ -44,39 +45,40 @@ export default function Register() {
   }
 
   return (
-    <Container>
-      <Header>
-        <Heading as="strong">Bem-vindo ao LAF Call!</Heading>
-        <Text>
-          Precisamos de algumas informações para criar seu perfil! Ah, você pode
-          editar essas informações depois.
-        </Text>
-
-        <MultiStep size={4} currentStep={1} />
-      </Header>
-
-      <Form as="form" onSubmit={handleSubmit(handleRegister)}>
-        <label>
-          <Text size="sm">Nome do usuário</Text>
-          <TextInput
-            prefix="laf.com/"
-            placeholder="seu-usuario"
-            {...register('username')}
-          />
-          <FormError>{errors.username?.message}</FormError>
-        </label>
-
-        <label>
-          <Text size="sm">Nome completo</Text>
-          <TextInput placeholder="seu-usuario" {...register('name')} />
-          <FormError>{errors.name?.message}</FormError>
-        </label>
-
-        <Button type="submit" disabled={isSubmitting}>
-          Próximo passo
-          <ArrowRight />
-        </Button>
-      </Form>
-    </Container>
+    <>
+      <Head>
+        <title>Registrar</title>
+      </Head>
+      <Container>
+        <Header>
+          <Heading as="strong">Bem-vindo ao LAF Call!</Heading>
+          <Text>
+            Precisamos de algumas informações para criar seu perfil! Ah, você
+            pode editar essas informações depois.
+          </Text>
+          <MultiStep size={4} currentStep={1} />
+        </Header>
+        <Form as="form" onSubmit={handleSubmit(handleRegister)}>
+          <label>
+            <Text size="sm">Nome do usuário</Text>
+            <TextInput
+              prefix="laf.com/"
+              placeholder="seu-usuario"
+              {...register('username')}
+            />
+            <FormError>{errors.username?.message}</FormError>
+          </label>
+          <label>
+            <Text size="sm">Nome completo</Text>
+            <TextInput placeholder="seu-usuario" {...register('name')} />
+            <FormError>{errors.name?.message}</FormError>
+          </label>
+          <Button type="submit" disabled={isSubmitting}>
+            Próximo passo
+            <ArrowRight />
+          </Button>
+        </Form>
+      </Container>
+    </>
   )
 }
