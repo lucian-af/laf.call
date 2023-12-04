@@ -6,12 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate:dev": "dotenv -e .env.development -- npx prisma migrate dev",
+    "migrate:prod": "dotenv -e .env -- npx prisma migrate deploy",
+    "prisma:studio": "dotenv -e .env.development -- npx prisma studio"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
     "@laf.ui/react": "^0.4.3",
     "@phosphor-icons/react": "^2.0.14",
+    "@prisma/client": "^5.6.0",
+    "dotenv-cli": "^7.3.0",
     "next": "13.5.6",
     "react": "^18",
     "react-dom": "^18",
@@ -25,6 +30,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "13.5.6",
+    "prisma": "^5.6.0",
     "typescript": "^5"
   }
 }
