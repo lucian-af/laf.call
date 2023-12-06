@@ -1,12 +1,21 @@
-import { Button, Heading, MultiStep, Text, TextInput } from '@laf.ui/react'
+import {
+  Button,
+  Heading,
+  MultiStep,
+  Text,
+  TextInput,
+  Toast,
+} from '@laf.ui/react'
 import { Container, Form, Header, FormError } from './styles'
 import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import { api } from '@/src/lib/axios'
+import { AxiosError } from 'axios'
 
 const registerFormSchema = z.object({
   username: z
@@ -32,7 +41,8 @@ export default function Register() {
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerFormSchema),
   })
-
+  const [open, setOpen] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
   const router = useRouter()
 
   useEffect(() => {
@@ -40,8 +50,20 @@ export default function Register() {
       setValue('username', String(router.query.username))
   }, [router.query?.username, setValue])
 
-  function handleRegister(data: RegisterFormData) {
-    console.log(data)
+  async function handleRegister(data: RegisterFormData) {
+    try {
+      await api.post('/users', {
+        name: data.name,
+        username: data.username,
+      })
+    } catch (error) {
+      let message = 'Erro inesperado. Tente novamente.'
+      if (error instanceof AxiosError && error?.response?.data?.message) {
+        message = error.response.data.message
+      }
+      setErrorMessage(message)
+      setOpen(true)
+    }
   }
 
   return (
@@ -78,6 +100,15 @@ export default function Register() {
             <ArrowRight />
           </Button>
         </Form>
+        <Toast
+          title="Ops!"
+          content={errorMessage}
+          open={open}
+          onOpenChange={setOpen}
+          duration={5000}
+          hasClose={false}
+          position="right-top"
+        />
       </Container>
     </>
   )
