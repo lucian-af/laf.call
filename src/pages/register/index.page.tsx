@@ -56,6 +56,8 @@ export default function Register() {
         name: data.name,
         username: data.username,
       })
+
+      await router.push('/register/connect-calendar')
     } catch (error) {
       let message = 'Erro inesperado. Tente novamente.'
       if (error instanceof AxiosError && error?.response?.data?.message) {
