@@ -4,9 +4,15 @@ import { ArrowRight } from '@phosphor-icons/react'
 import { Container, Header } from '../../register/styles'
 import Head from 'next/head'
 import { ConnectBox, ConnectItem } from './styles'
+import { signIn, useSession } from 'next-auth/react'
 
 export default function ConnectCalendar() {
   // const router = useRouter()
+
+  const session = useSession()
+
+  const conectado: boolean = session.status === 'authenticated'
+
   return (
     <>
       <Head>
@@ -26,8 +32,13 @@ export default function ConnectCalendar() {
           <ConnectItem>
             <Text>Google Calendar</Text>
 
-            <Button variant="secondary" size="sm">
-              Conectar
+            <Button
+              variant="secondary"
+              size="sm"
+              disabled={conectado}
+              onClick={() => signIn('google')}
+            >
+              {conectado ? 'Conectado' : 'Conectar'}
               <ArrowRight />
             </Button>
           </ConnectItem>
