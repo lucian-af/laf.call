@@ -1,4 +1,4 @@
-import { prisma } from '@/src/lib/prisma'
+import { prisma } from '@lib/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { setCookie } from 'nookies'
 
