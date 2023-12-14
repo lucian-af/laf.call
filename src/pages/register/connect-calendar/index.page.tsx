@@ -1,17 +1,22 @@
 import { Heading, MultiStep, Button, Text } from '@laf.ui/react'
-import { ArrowRight } from '@phosphor-icons/react'
+import { ArrowRight, Check } from '@phosphor-icons/react'
 // import { useRouter } from 'next/router'
 import { Container, Header } from '../../register/styles'
 import Head from 'next/head'
-import { ConnectBox, ConnectItem } from './styles'
+import { AuthError, ConnectBox, ConnectItem } from './styles'
 import { signIn, useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 export default function ConnectCalendar() {
-  // const router = useRouter()
-
+  const router = useRouter()
   const session = useSession()
 
-  const conectado: boolean = session.status === 'authenticated'
+  const isSingnedIn = session.status === 'authenticated'
+  const hasAuthError = !!router.query.error && !isSingnedIn
+
+  async function handleConnectCalendar() {
+    await signIn('google')
+  }
 
   return (
     <>
@@ -35,15 +40,22 @@ export default function ConnectCalendar() {
             <Button
               variant="secondary"
               size="sm"
-              disabled={conectado}
-              onClick={() => signIn('google')}
+              disabled={isSingnedIn}
+              onClick={handleConnectCalendar}
             >
-              {conectado ? 'Conectado' : 'Conectar'}
-              <ArrowRight />
+              {isSingnedIn ? 'Conectado' : 'Conectar'}
+              {isSingnedIn ? <Check /> : <ArrowRight />}
             </Button>
           </ConnectItem>
 
-          <Button type="submit">
+          {hasAuthError && (
+            <AuthError size="sm">
+              Falha ao se conectar ao Google, verifique se você habilitou as
+              permissões de acesso ao Google Calendar
+            </AuthError>
+          )}
+
+          <Button type="submit" disabled={!isSingnedIn}>
             Próximo passo
             <ArrowRight />
           </Button>
