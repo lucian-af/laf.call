@@ -1,27 +1,57 @@
+import { PrismaAdapter } from '@lib/auth/prisma-adapter'
+import { NextApiRequest, NextApiResponse } from 'next'
 import NextAuth, { NextAuthOptions } from 'next-auth'
-import GoogleProvider from 'next-auth/providers/google'
+import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google'
 
-export const authOptions: NextAuthOptions = {
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
-      authorization: {
-        params: {
-          scope:
-            'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar',
+export function buildNextAuthOptions(
+  req: NextApiRequest,
+  res: NextApiResponse,
+): NextAuthOptions {
+  return {
+    adapter: PrismaAdapter(req, res),
+    providers: [
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID ?? '',
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
+        authorization: {
+          params: {
+            scope:
+              'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar',
+          },
         },
-      },
-    }),
-  ],
-  callbacks: {
-    async signIn({ account }) {
-      if (!account?.scope?.includes('https://www.googleapis.com/auth/calendar'))
-        return '/register/connect-calendar?error=permissions'
+        profile(profile: GoogleProfile) {
+          return {
+            id: profile.sub,
+            name: profile.name,
+            avatar_url: profile.picture,
+            email: profile.email,
+          }
+        },
+      }),
+    ],
+    callbacks: {
+      async signIn({ account }) {
+        if (
+          !account?.scope?.includes('https://www.googleapis.com/auth/calendar')
+        )
+          return '/register/connect-calendar?error=permissions'
 
-      return true
+        return true
+      },
+
+      async session({ session, user }) {
+        return {
+          ...session,
+          user,
+        }
+      },
     },
-  },
+  }
 }
 
-export default NextAuth(authOptions)
+export default async function nextAuth(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
+  return await NextAuth(req, res, buildNextAuthOptions(req, res))
+}
