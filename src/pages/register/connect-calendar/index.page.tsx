@@ -3,9 +3,10 @@ import { ArrowRight, Check } from '@phosphor-icons/react'
 // import { useRouter } from 'next/router'
 import { Container, Header } from '../../register/styles'
 import Head from 'next/head'
-import { AuthError, ConnectBox, ConnectItem } from './styles'
+import { ConnectBox, ConnectItem } from './styles'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { TextError } from 'styles/global'
 
 export default function ConnectCalendar() {
   const router = useRouter()
@@ -49,10 +50,10 @@ export default function ConnectCalendar() {
           </ConnectItem>
 
           {hasAuthError && (
-            <AuthError size="sm">
+            <TextError>
               Falha ao se conectar ao Google, verifique se você habilitou as
               permissões de acesso ao Google Calendar
-            </AuthError>
+            </TextError>
           )}
 
           <Button type="submit" disabled={!isSingnedIn}>

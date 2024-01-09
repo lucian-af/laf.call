@@ -6,7 +6,7 @@ import {
   TextInput,
   Toast,
 } from '@laf.ui/react'
-import { Container, Form, Header, FormError } from './styles'
+import { Container, Form, Header } from './styles'
 import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -16,6 +16,7 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import { AxiosError } from 'axios'
 import { api } from '@lib/axios'
+import { TextError } from 'styles/global'
 
 const registerFormSchema = z.object({
   username: z
@@ -90,12 +91,12 @@ export default function Register() {
               placeholder="seu-usuario"
               {...register('username')}
             />
-            <FormError>{errors.username?.message}</FormError>
+            <TextError>{errors.username?.message}</TextError>
           </label>
           <label>
             <Text size="sm">Nome completo</Text>
             <TextInput placeholder="seu-usuario" {...register('name')} />
-            <FormError>{errors.name?.message}</FormError>
+            <TextError>{errors.name?.message}</TextError>
           </label>
           <Button type="submit" disabled={isSubmitting}>
             Próximo passo

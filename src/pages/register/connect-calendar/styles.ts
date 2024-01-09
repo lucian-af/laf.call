@@ -1,4 +1,4 @@
-import { Box, Text, styled } from '@laf.ui/react'
+import { Box, styled } from '@laf.ui/react'
 
 export const ConnectBox = styled(Box, {
   marginTop: '$6',
@@ -22,8 +22,4 @@ export const ConnectItem = styled(Box, {
       textAlign: 'center',
     },
   },
-})
-
-export const AuthError = styled(Text, {
-  color: '#f75a68',
 })
