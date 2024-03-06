@@ -1,6 +1,5 @@
 import { Heading, MultiStep, Button, Text } from '@laf.ui/react'
 import { ArrowRight, Check } from '@phosphor-icons/react'
-// import { useRouter } from 'next/router'
 import { Container, Header } from '../../register/styles'
 import Head from 'next/head'
 import { ConnectBox, ConnectItem } from './styles'
@@ -13,7 +12,13 @@ export default function ConnectCalendar() {
   const session = useSession()
 
   const isSingnedIn = session.status === 'authenticated'
-  const hasAuthError = !!router.query.error && !isSingnedIn  
+  const hasAuthError =
+    !!router.query.error &&
+    !isSingnedIn &&
+    !router.query.error.includes('email')
+
+  const hasAuthErrorEmail =
+    !!router.query.error && !isSingnedIn && router.query.error.includes('email')
 
   async function handleConnectCalendar() {
     await signIn('google')
@@ -57,6 +62,13 @@ export default function ConnectCalendar() {
             <TextError>
               Falha ao se conectar ao Google, verifique se você habilitou as
               permissões de acesso ao Google Calendar
+            </TextError>
+          )}
+
+          {hasAuthErrorEmail && (
+            <TextError>
+              E-mail vinculado à outra conta. Use outro e-mail ou acesse a conta
+              já cadastrada.
             </TextError>
           )}
 
