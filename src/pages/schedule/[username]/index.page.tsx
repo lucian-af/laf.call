@@ -2,6 +2,7 @@ import { Avatar, Heading, Text } from '@laf.ui/react'
 import { Container, UserHeader } from './styles'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { prisma } from '@lib/prisma'
+import { ScheduleForm } from './ScheduleForm'
 
 type ScheduleUserProps = {
   user: {
@@ -19,6 +20,8 @@ export default function User({ user }: ScheduleUserProps) {
         <Heading>{user.name}</Heading>
         <Text>{user.bio}</Text>
       </UserHeader>
+
+      <ScheduleForm />
     </Container>
   )
 }

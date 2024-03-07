@@ -1,11 +1,21 @@
-export function getWeekDays() {
+interface GetWeekDaysParams {
+  short?: boolean
+}
+
+export function getWeekDays({ short = false }: GetWeekDaysParams) {
   const formatter = new Intl.DateTimeFormat('pt-BR', {
     weekday: 'long',
   })
 
   return Array.from(Array(7).keys())
     .map((day) => formatter.format(Date.UTC(2023, 7, day)))
-    .map((weekDay) => capitalize(weekDay))
+    .map((weekDay) => {
+      if (short) {
+        return weekDay.substring(0, 3).toUpperCase()
+      }
+
+      return capitalize(weekDay)
+    })
 }
 
 export function capitalize(value: string) {
