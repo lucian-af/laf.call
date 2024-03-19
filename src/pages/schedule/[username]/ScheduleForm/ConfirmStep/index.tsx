@@ -2,10 +2,33 @@ import { Button, Text, TextArea, TextInput } from '@laf.ui/react'
 import { ConfirmForm, FormActions, FormHeader } from './styles'
 import { CalendarBlank, Clock } from '@phosphor-icons/react'
 import { TextError } from 'styles/global'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+
+const confirmFormSchema = z.object({
+  name: z.string().min(3, { message: 'Informe pelo menos 3 caracteres.' }),
+  email: z.string().email({ message: 'Informe um e-mail válido.' }),
+  observations: z.string().nullable(),
+})
+
+type ConfirmFormType = z.infer<typeof confirmFormSchema>
 
 export function ConfirmStep() {
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+  } = useForm<ConfirmFormType>({
+    resolver: zodResolver(confirmFormSchema),
+  })
+
+  function handleConfirmScheduling(data: ConfirmFormType) {
+    console.log(data)
+  }
+
   return (
-    <ConfirmForm as="form">
+    <ConfirmForm as="form" onSubmit={handleSubmit(handleConfirmScheduling)}>
       <FormHeader>
         <Text>
           <CalendarBlank />
@@ -20,19 +43,23 @@ export function ConfirmStep() {
 
       <label>
         <Text size="sm">Nome completo</Text>
-        <TextInput placeholder="Seu nome" />
-        <TextError>Ops! Tá faltando o nome completo</TextError>
+        <TextInput placeholder="Seu nome" {...register('name')} />
+        <TextError>{errors.name?.message}</TextError>
       </label>
 
       <label>
         <Text size="sm">Endereço de e-mail</Text>
-        <TextInput type="email" placeholder="joaocorça@exemplo.com" />
-        <TextError>Ops! Tá faltando o e-mail</TextError>
+        <TextInput
+          type="email"
+          placeholder="joaocorça@exemplo.com"
+          {...register('email')}
+        />
+        <TextError>{errors.email?.message}</TextError>
       </label>
 
       <label>
         <Text size="sm">Observações</Text>
-        <TextArea />
+        <TextArea {...register('observations')} />
       </label>
 
       <FormActions>
@@ -40,7 +67,9 @@ export function ConfirmStep() {
           Cancelar
         </Button>
 
-        <Button type="submit">Confirmar</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          Confirmar
+        </Button>
       </FormActions>
     </ConfirmForm>
   )
