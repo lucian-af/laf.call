@@ -27,12 +27,19 @@ export const Container = styled(Box, {
 export const TimePicker = styled('div', {
   borderLeft: '1px solid $gray600',
   padding: '$6 $6 0',
-  overflowY: 'scroll',
+  overflowY: 'auto',
   position: 'absolute',
   top: 0,
   bottom: 0,
   right: 0,
   width: 280,
+
+  '@media(max-width: 900px)': {
+    borderTop: '1px solid $gray600',
+    position: 'initial',
+    display: 'block',
+    width: '100%',
+  },
 })
 
 export const TimePickerHeader = styled(Text, {
@@ -45,13 +52,14 @@ export const TimePickerHeader = styled(Text, {
 })
 
 export const TimePickerList = styled('div', {
-  marginTop: '$3',
+  margin: '$3 auto',
   display: 'grid',
   gridTemplateColumns: '1fr',
   gap: '$2',
 
   '@media(max-width: 900px)': {
-    gridTemplateColumns: '2fr',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gridAutoRows: '1fr',
   },
 })
 
@@ -64,6 +72,12 @@ export const TimePickerItem = styled('button', {
   lineHeight: '$base',
   borderRadius: '$sm',
   padding: '$2 0',
+
+  '@media(max-width: 900px)': {
+    width: '100%',
+    height: '100%',
+    justifySelf: 'center',
+  },
 
   '&:last-child': {
     marginBottom: '$6',
