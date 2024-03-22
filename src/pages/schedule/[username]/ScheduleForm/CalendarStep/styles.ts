@@ -76,7 +76,8 @@ export const TimePickerItem = styled('button', {
   '@media(max-width: 900px)': {
     width: '100%',
     height: '100%',
-    justifySelf: 'center',
+    lineHeight: '$shorter',
+    padding: '0',
   },
 
   '&:last-child': {
