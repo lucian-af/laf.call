@@ -10,6 +10,9 @@ import {
 import { getWeekDays } from 'utils/get-week-days'
 import { useMemo, useState } from 'react'
 import dayjs from 'dayjs'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '@lib/axios'
+import { useRouter } from 'next/router'
 
 interface CalendarWeek {
   week: number
@@ -21,6 +24,10 @@ interface CalendarWeek {
 
 type CalendarWeeks = CalendarWeek[]
 
+type BlockedDates = {
+  blockedWeekDays: number[]
+}
+
 type CalendarProps = {
   selectedDate: Date | null
   onDateSelected: (date: Date) => void
@@ -30,23 +37,33 @@ export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1)
   })
-
-  function handlePreviousMonth() {
-    const previousMonthDate = currentDate.subtract(1, 'month')
-    setCurrentDate(previousMonthDate)
-  }
-
-  function handleNextMonth() {
-    const previousMonthDate = currentDate.add(1, 'month')
-    setCurrentDate(previousMonthDate)
-  }
-
   const shortWeekDays = getWeekDays({ short: true })
-
   const currentMonth = currentDate.format('MMMM')
   const currentYear = currentDate.format('YYYY')
+  const router = useRouter()
+  const username = String(router.query.username)
+
+  const { data: blockedDates } = useQuery<BlockedDates>({
+    queryKey: [
+      'blocked-dates',
+      currentDate.get('year'),
+      currentDate.get('month'),
+    ],
+    queryFn: async () => {
+      const response = await api.get(`/users/${username}/blocked-dates`, {
+        params: {
+          year: currentDate.get('year'),
+          month: currentDate.get('month'),
+        },
+      })
+
+      return response.data
+    },
+  })
 
   const calendarWeeks = useMemo(() => {
+    if (!blockedDates) return []
+
     const daysInMonthArray = Array.from({
       length: currentDate.daysInMonth(),
     }).map((_, index) => currentDate.set('date', index + 1))
@@ -73,7 +90,12 @@ export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
         return { date, disabled: true }
       }),
       ...daysInMonthArray.map((date) => {
-        return { date, disabled: date.endOf('day').isBefore(new Date()) }
+        return {
+          date,
+          disabled:
+            date.endOf('day').isBefore(new Date()) ||
+            blockedDates.blockedWeekDays.includes(date.get('day')),
+        }
       }),
       ...nextMonthFillArray.map((date) => {
         return { date, disabled: true }
@@ -97,7 +119,17 @@ export function Calendar({ selectedDate, onDateSelected }: CalendarProps) {
     )
 
     return calendarWeeks
-  }, [currentDate])
+  }, [currentDate, blockedDates])
+
+  function handlePreviousMonth() {
+    const previousMonthDate = currentDate.subtract(1, 'month')
+    setCurrentDate(previousMonthDate)
+  }
+
+  function handleNextMonth() {
+    const previousMonthDate = currentDate.add(1, 'month')
+    setCurrentDate(previousMonthDate)
+  }
 
   return (
     <CalendarContainer>
