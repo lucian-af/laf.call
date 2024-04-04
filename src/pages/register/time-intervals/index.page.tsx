@@ -7,7 +7,6 @@ import {
   TextInput,
 } from '@laf.ui/react'
 import { Container, Header } from '../styles'
-import Head from 'next/head'
 import {
   IntervalBox,
   IntervalContainer,
@@ -24,6 +23,7 @@ import { TextError } from 'styles/global'
 import { convertTimeStringToMinutes } from 'utils/convert-time-sting-to-minutes'
 import { api } from '@lib/axios'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 const timeIntervalsFormSchema = z.object({
   intervals: z
@@ -108,9 +108,7 @@ export default function TimeIntervals() {
 
   return (
     <>
-      <Head>
-        <title>Registrar</title>
-      </Head>
+      <NextSeo title="Selecione sua disponibilidade | LAF Call" noindex />
       <Container>
         <Header>
           <Heading as="strong">Defina sua disponibilidade</Heading>

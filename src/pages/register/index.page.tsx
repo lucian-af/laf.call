@@ -13,10 +13,10 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Head from 'next/head'
 import { AxiosError } from 'axios'
 import { api } from '@lib/axios'
 import { TextError } from 'styles/global'
+import { NextSeo } from 'next-seo'
 
 const registerFormSchema = z.object({
   username: z
@@ -71,9 +71,7 @@ export default function Register() {
 
   return (
     <>
-      <Head>
-        <title>Registrar</title>
-      </Head>
+      <NextSeo title="Crie uma conta | LAF Call" />
       <Container>
         <Header>
           <Heading as="strong">Bem-vindo ao LAF Call!</Heading>

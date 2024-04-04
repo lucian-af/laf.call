@@ -1,11 +1,11 @@
 import { Heading, MultiStep, Button, Text } from '@laf.ui/react'
 import { ArrowRight, Check } from '@phosphor-icons/react'
 import { Container, Header } from '../../register/styles'
-import Head from 'next/head'
 import { ConnectBox, ConnectItem } from './styles'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { TextError } from 'styles/global'
+import { NextSeo } from 'next-seo'
 
 export default function ConnectCalendar() {
   const router = useRouter()
@@ -30,9 +30,7 @@ export default function ConnectCalendar() {
 
   return (
     <>
-      <Head>
-        <title>Registrar</title>
-      </Head>
+      <NextSeo title="Conecte sua agenda do Google | LAF Call" noindex />
       <Container>
         <Header>
           <Heading as="strong">Conecte sua agenda!</Heading>

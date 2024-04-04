@@ -10,7 +10,6 @@ import { ArrowRight } from '@phosphor-icons/react/dist/ssr'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import Head from 'next/head'
 import { Container, Header } from '../styles'
 import { ProfileBox, FormAnnotation } from './styles'
 import { GetServerSideProps } from 'next'
@@ -19,6 +18,7 @@ import { getServerSession } from 'next-auth'
 import { buildNextAuthOptions } from 'pages/api/auth/[...nextauth].api'
 import { api } from '@lib/axios'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 const updateProfileFormSchema = z.object({
   bio: z.string(),
@@ -48,9 +48,7 @@ export default function UpdateProfile() {
 
   return (
     <>
-      <Head>
-        <title>Atualizar perfil</title>
-      </Head>
+      <NextSeo title="Atualize seu perfil | LAF Call" noindex />
       <Container>
         <Header>
           <Heading as="strong">Quase lá</Heading>
