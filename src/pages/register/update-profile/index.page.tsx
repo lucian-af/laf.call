@@ -59,8 +59,8 @@ export default function UpdateProfile() {
           <label>
             <Text size="sm">Foto do perfil</Text>
             <Avatar
-              src={session?.data?.user.avatar_url}
-              alt={session?.data?.user.name}
+              src={session.data?.user.avatar_url}
+              alt={session.data?.user.name}
             />
           </label>
 
